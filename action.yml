@@ -1,0 +1,49 @@
+name: ui-release-action
+
+description: |
+  Organizes CI/CD pipeline for all Yandex Cloud UI packages - generate Changelog and bump version automatically,
+  create a release PR which once merged results in creating a new GitHub release and publishing a new version of NPM
+  package
+
+inputs:
+  node-version:
+    description: Node.js version used for running tests etc
+    required: false
+    default: '14'
+  github-token:
+    description: PAT of a GitHub user which creates release PR
+    required: true
+  npm-token:
+    description: PAT of an NPM user which publishes the package
+    required: true
+
+outputs:
+  release-created:
+    description: If the release has been already created or it was just the release PR
+    value: ${{ steps.release.outputs.release_created }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ inputs.node-version }}
+        registry-url: 'https://registry.npmjs.org'
+    - run: npm ci
+      shell: bash
+    - run: npm test
+      shell: bash
+    - uses: codex-team/action-nodejs-package-info@v1
+      id: package
+    - uses: GoogleCloudPlatform/release-please-action@v2
+      id: release
+      with:
+        token: ${{ inputs.github-token }}
+        release-type: node
+        package-name: ${{ steps.package.outputs.name }}
+    - run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+      if: ${{ steps.release.outputs.release_created }}
+      shell: bash
