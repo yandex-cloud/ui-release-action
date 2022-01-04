@@ -42,6 +42,7 @@ runs:
         token: ${{ inputs.github-token }}
         release-type: node
         package-name: ${{ steps.package.outputs.name }}
+        bump-minor-pre-major: Yes
     - run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
