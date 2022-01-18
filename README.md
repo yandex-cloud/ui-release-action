@@ -12,6 +12,8 @@ Obviously, it is a [GitHub action](https://github.com/features/actions), it does
 - if they are successful, a new GitHub release is created and a new package version is published to NPM.
 
 ## How should I use it?
+
+### Setting up
 Create the file `.github/workflows/release.yml` at the root of your repo, providing at least the following inputs:
 - `github-token` (who does create release PR)
 - `npm-token` (who does publish NPM package)
@@ -35,3 +37,10 @@ jobs:
           npm-token: ${{ secrets.YC_UI_BOT_NPM_TOKEN }}
           node-version: 14
 ```
+
+### Early development
+The action encourages "moving fast and breaking things" by preventing breaking changes from bumping major version
+in the early stages of project development (before you reach version 1.0.0). In other words, both the 
+'feat: something' commits and the commits with 'BREAKING CHANGE: something' footer bump a minor component 
+automatically. Once you consider your project stable enough, you should add `Release-As: 1.0.0` footer in one of
+the commits and see the usual effect of the 'BREAKING CHANGE: something' footer on you major version.
