@@ -43,7 +43,7 @@ runs:
         release-type: node
         package-name: ${{ steps.package.outputs.name }}
         changelog-types: '[{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"perf","section":"Performance Improvements","hidden":false}]'
-        bump-minor-pre-major: Yes
+        bump-minor-pre-major: true
     - run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
