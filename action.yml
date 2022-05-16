@@ -36,7 +36,7 @@ runs:
       shell: bash
     - uses: codex-team/action-nodejs-package-info@v1
       id: package
-    - uses: GoogleCloudPlatform/release-please-action@v2
+    - uses: GoogleCloudPlatform/release-please-action@v3
       id: release
       with:
         token: ${{ inputs.github-token }}
