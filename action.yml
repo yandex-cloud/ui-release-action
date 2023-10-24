@@ -10,6 +10,10 @@ inputs:
     description: Node.js version used for running tests etc
     required: false
     default: '14'
+  npm-version:
+    description: npm version to use
+    required: false
+    default: '6.*'
   github-token:
     description: PAT of a GitHub user which creates release PR
     required: true
@@ -30,6 +34,7 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
         registry-url: 'https://registry.npmjs.org'
+    - run: npm i -g 'npm@${{npm-version}}' --registry=https://registry.npmjs.org
     - run: npm ci
       shell: bash
     - run: npm test
